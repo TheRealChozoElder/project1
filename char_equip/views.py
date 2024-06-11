@@ -3,11 +3,11 @@ from .models import Character, EquippmentSlot, Item
 
 def character_detail(request, character_id):
     character = Character.objects.get(pk=character_id)
-    equip_items = Item.objects.filter(slot__character=character_id).exclude(slot__name="Backpack")
+    equipped_items = Item.objects.filter(slot__character=character_id).exclude(slot__name="Backpack")
     backpack_items = Item.objects.filter(slot__character=character_id, slot__name="Backpack")
     return render(request, 'character_detail.html', {
         'character': character,
-        'equip_items': equip_items,
+        'equipped_items': equipped_items,
         'backpack_items': backpack_items,        
     })
     
@@ -20,10 +20,10 @@ def equip_item(request, character_id, item_id):
     item = Item.objects.get(pk=item_id)
     if item.slot is None or item.slot.character != character or not item.slot.name == "Backpack":
         if EquippmentSlot.objects.filter(character=character, name=item.slot.name).exists():
-            equip_item = Item.objects.get(slot__character=character, slot__name=item.slot.name)
-            character.total_AP -= equip_item.power
-            equip_item.slot = None
-            equip_item.save()
+            equipped_item = Item.objects.get(slot__character=character, slot__name=item.slot.name)
+            character.total_AP -= equipped_item.power
+            equipped_item.slot = None
+            equipped_item.save()
         item.slot = EquippmentSlot.objects.get(character=character, name=item.slot.name)
         character.total_AP += item.power
         item.save()

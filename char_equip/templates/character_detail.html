@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Detail</title>
+    <title>Player Details</title>
 </head>
 
 <body>
@@ -12,7 +12,7 @@
     <p>Total AP: {{ character.total_AP }}</p>
     <h2>Equipped Items</h2>
     <ul>
-        {% for item in equiped_items %}
+        {% for item in equipped_items %}
         <li>{{ item.name }} ({{ item.slot.name }})</li>
         {% endfor %}
     </ul>
@@ -20,7 +20,8 @@
     <ul>
         {% for item in backpack_items %}
         <li>
-            {{ item.name }} ({{ item.slot.name }}) - <a href="{% url 'move_to_backpack' character.id item.id %}">Move to
+            {{ item.name }} ({{ item.slot.name }}) - <a
+                href="{% url 'char_equip:move_to_backpack' character.id item.id %}">Move to
                 Equipment</a>
         </li>
         {% endfor %}
@@ -31,7 +32,7 @@
         <li>
             {{ item.name }} ({{ item.AP}}) -
             {% if item.slot is None or item.slot.character != character %} <a
-                href="{% url 'equip_item' character.id item.id %}">Equip to {{ item.slot.name }}</a>
+                href="{% url 'char_equip:equip_item' character.id item.id %}">Equip to {{ item.slot.name }}</a>
             {% endif %}
         </li>
         {% endfor %}

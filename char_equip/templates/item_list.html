@@ -11,7 +11,7 @@
     <h1>Items</h1>
     <ul>
         {% for item in items %}
-        <li>{{ item.name }} ({{ item.power }})</li>
+        <li>{{ item.name }} ({{ item.power }}) is currently located at {{ item.slot.name }}</li>
         {% endfor %}
     </ul>
 </body>
