@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Character, EquippmentSlot, Item
 
-def char_detail(request, character_id):
+def character_detail(request, character_id):
     character = Character.objects.get(pk=character_id)
     equip_items = Item.objects.filter(slot__character=character_id).exclude(slot__name="Backpack")
     backpack_items = Item.objects.filter(slot__character=character_id, slot__name="Backpack")
@@ -18,9 +18,9 @@ def item_list(request):
 def equip_item(request, character_id, item_id):
     character = Character.objects.get(pk=character_id)
     item = Item.objects.get(pk=item_id)
-    if item.slot is None or item.slot.character != character or not item.slotname == "Backpack":
+    if item.slot is None or item.slot.character != character or not item.slot.name == "Backpack":
         if EquippmentSlot.objects.filter(character=character, name=item.slot.name).exists():
-            equip_item = Item.get(slot__character=character, slot__name=item.slot.name)
+            equip_item = Item.objects.get(slot__character=character, slot__name=item.slot.name)
             character.total_AP -= equip_item.power
             equip_item.slot = None
             equip_item.save()
@@ -32,7 +32,7 @@ def equip_item(request, character_id, item_id):
 
 def move_to_backpack(request, character_id, item_id):
     character = Character.objects.get(pk=character_id)
-    item = Item.objects.get(pk=character_id)
+    item = Item.objects.get(pk=item_id)
     item.slot = None
     item.save()
     return redirect('character_detail', character_id)
