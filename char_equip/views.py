@@ -29,3 +29,10 @@ def equip_item(request, character_id, item_id):
         item.save()
         character.save()
     return redirect('character_detail', character_id)
+
+def move_to_backpack(request, character_id, item_id):
+    character = Character.objects.get(pk=character_id)
+    item = Item.objects.get(pk=character_id)
+    item.slot = None
+    item.save()
+    return redirect('character_detail', character_id)
